@@ -1,0 +1,249 @@
+.section {
+  position: relative;
+  padding-block: var(--section-space);
+  overflow: hidden;
+}
+
+.section::before {
+  position: absolute;
+  top: 11rem;
+  left: 0;
+  width: 1px;
+  height: calc(100% - 19rem);
+  background: linear-gradient(transparent, var(--color-accent-deep) 14%, var(--color-border-subtle) 78%, transparent);
+  content: '';
+}
+
+.projectList {
+  display: grid;
+  gap: clamp(6.5rem, 11vw, 10.5rem);
+}
+
+.project {
+  position: relative;
+  display: grid;
+  grid-template-columns: 3.5rem minmax(0, 1.18fr) minmax(18rem, 0.82fr);
+  grid-template-areas: 'number media copy';
+  align-items: center;
+  gap: clamp(1.5rem, 3.6vw, 4rem);
+}
+
+.project[data-direction='reverse'] {
+  grid-template-columns: 3.5rem minmax(18rem, 0.82fr) minmax(0, 1.18fr);
+  grid-template-areas: 'number copy media';
+}
+
+.project::after {
+  position: absolute;
+  right: 0;
+  bottom: calc(clamp(6.5rem, 11vw, 10.5rem) / -2);
+  left: 0;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, var(--color-border-subtle) 18%, var(--color-border-subtle) 82%, transparent);
+  content: '';
+}
+
+.project:last-child::after {
+  display: none;
+}
+
+.numberColumn {
+  grid-area: number;
+  align-self: stretch;
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+  gap: 0.8rem;
+}
+
+.projectNumber {
+  color: var(--color-text-ghost);
+  font-family: var(--font-mono);
+  font-size: 0.83rem;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  writing-mode: vertical-rl;
+}
+
+.numberRule {
+  width: 1px;
+  flex: 1;
+  background: linear-gradient(var(--color-accent-line), transparent);
+}
+
+.mediaColumn {
+  position: relative;
+  grid-area: media;
+}
+
+.mediaCaption {
+  display: block;
+  margin-top: 0.65rem;
+  color: var(--color-text-ghost);
+  font-family: var(--font-mono);
+  font-size: 0.57rem;
+  letter-spacing: 0.1em;
+  text-align: right;
+}
+
+.copyColumn {
+  grid-area: copy;
+}
+
+.kicker {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  margin-bottom: 1rem;
+  color: var(--color-accent-bright);
+  font-family: var(--font-mono);
+  font-size: 0.62rem;
+  font-weight: 650;
+  letter-spacing: 0.12em;
+}
+
+.kicker span:last-child:not(:first-child) {
+  color: var(--color-text-muted);
+  font-family: var(--font-sans);
+  font-size: 0.68rem;
+  letter-spacing: 0.03em;
+}
+
+.copyColumn h3 {
+  max-width: 16em;
+  font-size: clamp(1.55rem, 2vw, 1.95rem);
+  line-height: 1.35;
+}
+
+.summary {
+  margin-top: 1.3rem;
+  color: var(--color-text-secondary);
+  font-size: var(--text-sm);
+  line-height: 1.75;
+}
+
+.highlights {
+  display: grid;
+  gap: 0.75rem;
+  margin: 1.65rem 0 0;
+  padding: 1.25rem 0 0;
+  border-top: 1px solid var(--color-border-subtle);
+}
+
+.highlights li {
+  display: grid;
+  grid-template-columns: 1.7rem 1fr;
+  gap: 0.55rem;
+  color: var(--color-text-muted);
+  font-size: 0.81rem;
+  line-height: 1.65;
+}
+
+.highlights li > span {
+  padding-top: 0.08rem;
+  color: var(--color-accent-line);
+  font-family: var(--font-mono);
+  font-size: 0.58rem;
+}
+
+.tags {
+  display: flex;
+  flex-wrap: wrap;
+  margin: 1.6rem 0 0;
+  padding: 0;
+}
+
+.tags li {
+  color: var(--color-text-secondary);
+  font-family: var(--font-mono);
+  font-size: 0.67rem;
+  letter-spacing: 0.04em;
+}
+
+.tags li:not(:last-child)::after {
+  margin-inline: 0.52rem;
+  color: var(--color-accent-deep);
+  content: '/';
+}
+
+.links {
+  margin-top: 1.4rem;
+}
+
+.links a {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  color: var(--color-accent-bright);
+  font-size: 0.8rem;
+  font-weight: 700;
+  text-decoration: none;
+}
+
+.links svg {
+  width: 0.95rem;
+}
+
+@media (max-width: 68.75rem) {
+  .project,
+  .project[data-direction='reverse'] {
+    grid-template-columns: 2.5rem minmax(0, 1.12fr) minmax(17rem, 0.88fr);
+    gap: 1.7rem;
+  }
+}
+
+@media (max-width: 48rem) {
+  .section::before {
+    display: none;
+  }
+
+  .project,
+  .project[data-direction='reverse'] {
+    display: grid;
+    grid-template-columns: 1.8rem minmax(0, 1fr);
+    grid-template-areas:
+      'number media'
+      '. copy';
+    align-items: start;
+    gap: 1rem 0.8rem;
+  }
+
+  .numberColumn {
+    min-height: 100%;
+  }
+
+  .mediaCaption {
+    text-align: left;
+  }
+
+  .copyColumn {
+    padding-top: 1rem;
+  }
+
+  .kicker {
+    align-items: flex-start;
+    flex-direction: column;
+    gap: 0.35rem;
+  }
+
+  .projectNumber {
+    font-size: 0.68rem;
+  }
+
+  .copyColumn h3 {
+    font-size: 1.5rem;
+  }
+}
+
+@media (max-width: 23rem) {
+  .project,
+  .project[data-direction='reverse'] {
+    grid-template-columns: 1fr;
+    grid-template-areas: 'media' 'copy';
+  }
+
+  .numberColumn {
+    display: none;
+  }
+}

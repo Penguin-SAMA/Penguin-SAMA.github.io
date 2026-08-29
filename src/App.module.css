@@ -1,0 +1,56 @@
+.app {
+  position: relative;
+  min-height: 100svh;
+  overflow: clip;
+}
+
+.technicalBackdrop {
+  position: fixed;
+  z-index: 0;
+  inset: 0;
+  pointer-events: none;
+}
+
+.technicalBackdrop > span {
+  position: absolute;
+  display: block;
+  opacity: 0.32;
+}
+
+.technicalBackdrop > span:nth-child(1) {
+  top: 18%;
+  left: 1.15rem;
+  width: 1px;
+  height: 27vh;
+  background: linear-gradient(transparent, var(--color-accent-deep), transparent);
+}
+
+.technicalBackdrop > span:nth-child(2) {
+  top: 58%;
+  right: 1.15rem;
+  width: 1px;
+  height: 31vh;
+  background: linear-gradient(transparent, var(--color-accent-deep), transparent);
+}
+
+.technicalBackdrop > span:nth-child(3) {
+  right: 14%;
+  bottom: 10%;
+  width: 3px;
+  height: 3px;
+  background: var(--color-ember);
+  box-shadow:
+    -4rem -8rem 0 -1px rgb(255 106 26 / 70%),
+    2rem -14rem 0 -1px rgb(255 138 42 / 55%),
+    0 0 1rem rgb(255 106 26 / 65%);
+}
+
+:global(body[data-menu-open='true']) {
+  overflow: hidden;
+}
+
+@media (max-width: 48rem) {
+  .technicalBackdrop {
+    display: none;
+  }
+}

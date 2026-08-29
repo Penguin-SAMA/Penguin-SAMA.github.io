@@ -1,0 +1,170 @@
+import { expect, test, type Page, type TestInfo } from '@playwright/test'
+
+const viewports = [
+  { name: 'desktop-1440x900', width: 1440, height: 900 },
+  { name: 'mobile-390x844', width: 390, height: 844 },
+  { name: 'mobile-320x720', width: 320, height: 720 },
+] as const
+
+async function openPortfolio(
+  page: Page,
+  viewport: { width: number; height: number },
+) {
+  await page.setViewportSize(viewport)
+  await page.goto('/', { waitUntil: 'domcontentloaded' })
+  await expect(page.locator('main')).toBeVisible()
+  await page.waitForLoadState('networkidle')
+}
+
+test.describe('responsive portfolio shell', () => {
+  for (const viewport of viewports) {
+    test(`has no horizontal overflow at ${viewport.name}`, async ({ page }, testInfo: TestInfo) => {
+      await openPortfolio(page, viewport)
+
+      const layout = await page.evaluate(() => {
+        const root = document.documentElement
+        const body = document.body
+        const clientWidth = root.clientWidth
+        const scrollWidth = Math.max(root.scrollWidth, body.scrollWidth)
+        const offenders = Array.from(body.querySelectorAll<HTMLElement>('*'))
+          .map((element) => {
+            const rect = element.getBoundingClientRect()
+            return {
+              element: element.tagName.toLowerCase(),
+              className: element.className.toString().slice(0, 100),
+              left: Math.round(rect.left),
+              right: Math.round(rect.right),
+            }
+          })
+          .filter(({ left, right }) => left < -1 || right > clientWidth + 1)
+          .slice(0, 12)
+
+        return { clientWidth, scrollWidth, offenders }
+      })
+
+      expect(
+        layout.scrollWidth,
+        `Horizontal overflow at ${viewport.name}: ${JSON.stringify(layout, null, 2)}`,
+      ).toBeLessThanOrEqual(layout.clientWidth + 1)
+
+      await page.screenshot({
+        path: testInfo.outputPath(`${viewport.name}.png`),
+        fullPage: true,
+      })
+    })
+  }
+})
+
+test('desktop navigation scrolls to the selected section', async ({ page }) => {
+  await openPortfolio(page, { width: 1440, height: 900 })
+
+  const navigation = page.getByRole('navigation', { name: 'Primary navigation' })
+  const projectsLink = navigation.getByRole('link', { name: '作品', exact: true })
+  const projectsSection = page.locator('#projects')
+
+  await projectsLink.click()
+
+  await expect(page).toHaveURL(/#projects$/)
+  await expect.poll(() => page.evaluate(() => window.scrollY)).toBeGreaterThan(100)
+  await expect.poll(() => projectsSection.evaluate((section) => {
+    const rect = section.getBoundingClientRect()
+    return rect.top < window.innerHeight && rect.bottom > 0
+  })).toBe(true)
+})
+
+test('language switch updates copy, document language, and the URL query', async ({ page }) => {
+  await openPortfolio(page, { width: 1440, height: 900 })
+
+  await expect(page.locator('html')).toHaveAttribute('lang', 'zh-CN')
+  await expect(page.getByRole('heading', { level: 1, name: '游戏客户端开发' })).toBeVisible()
+
+  const languageGroup = page.getByRole('group', { name: '切换语言' })
+  await languageGroup.getByRole('button', { name: 'EN', exact: true }).click()
+
+  await expect(page.locator('html')).toHaveAttribute('lang', 'en')
+  await expect(page.getByRole('heading', { level: 1, name: 'Game Client Development' })).toBeVisible()
+  await expect.poll(() => new URL(page.url()).searchParams.get('lang')).toBe('en')
+  await expect(page.getByRole('group', { name: 'Switch language' })
+    .getByRole('button', { name: 'EN', exact: true }))
+    .toHaveAttribute('aria-pressed', 'true')
+
+  await page.reload({ waitUntil: 'domcontentloaded' })
+  await expect(page.locator('html')).toHaveAttribute('lang', 'en')
+  await expect(page.getByRole('heading', { level: 1, name: 'Game Client Development' })).toBeVisible()
+  expect(new URL(page.url()).searchParams.get('lang')).toBe('en')
+})
+
+test('mobile menu can be opened and navigated using only the keyboard', async ({ page }) => {
+  await openPortfolio(page, { width: 390, height: 844 })
+
+  const menuButton = page.locator('button[aria-controls="primary-navigation"]')
+  const navigation = page.getByRole('navigation', { name: 'Primary navigation' })
+  const homeLink = navigation.getByRole('link', { name: '首页', exact: true })
+  const projectsLink = navigation.getByRole('link', { name: '作品', exact: true })
+
+  await expect(menuButton).toHaveAttribute('aria-expanded', 'false')
+  await menuButton.focus()
+  await expect(menuButton).toBeFocused()
+  await page.keyboard.press('Enter')
+
+  await expect(menuButton).toHaveAttribute('aria-expanded', 'true')
+  await expect(navigation).toBeVisible()
+
+  await page.keyboard.press('Tab')
+  await expect(homeLink).toBeFocused()
+  await page.keyboard.press('Tab')
+  await expect(projectsLink).toBeFocused()
+  await page.keyboard.press('Enter')
+
+  await expect(menuButton).toHaveAttribute('aria-expanded', 'false')
+  await expect(page).toHaveURL(/#projects$/)
+})
+
+test('reduced-motion preference disables hidden reveals and the cursor trail', async ({ page }) => {
+  await page.emulateMedia({ reducedMotion: 'reduce' })
+  await openPortfolio(page, { width: 1440, height: 900 })
+
+  expect(await page.evaluate(() => window.matchMedia('(prefers-reduced-motion: reduce)').matches)).toBe(true)
+
+  const hiddenRevealCount = await page.locator('[data-testid="project-card"]').evaluateAll((cards) =>
+    cards.reduce((count, card) => {
+      const hiddenChildren = Array.from(card.children).filter(
+        (child) => getComputedStyle(child).opacity === '0',
+      )
+      return count + hiddenChildren.length
+    }, 0),
+  )
+  expect(hiddenRevealCount).toBe(0)
+
+  await page.mouse.move(240, 180)
+  const cursorLayerCount = await page.locator('[aria-hidden="true"]').evaluateAll((elements) =>
+    elements.filter((element) => {
+      const style = getComputedStyle(element)
+      return style.position === 'fixed'
+        && style.pointerEvents === 'none'
+        && element.children.length === 2
+    }).length,
+  )
+
+  expect(cursorLayerCount).toBe(0)
+  await expect(page.locator('html')).not.toHaveAttribute('data-cursor-active', 'true')
+})
+
+test('placeholder project media does not expose playback controls', async ({ page }) => {
+  await openPortfolio(page, { width: 1440, height: 900 })
+
+  const imageFrames = page.locator('[data-media-type="image"]')
+  const placeholderLabels = page.getByText('项目素材待补充', { exact: true })
+  await expect(imageFrames).toHaveCount(4)
+  await expect(placeholderLabels).toHaveCount(5)
+
+  for (let index = 0; index < await placeholderLabels.count(); index += 1) {
+    const mediaContainer = placeholderLabels.nth(index).locator('xpath=ancestor::*[img][1]')
+    await expect(mediaContainer.locator('button')).toHaveCount(0)
+    await expect(mediaContainer.locator('video, iframe')).toHaveCount(0)
+  }
+
+  await expect(imageFrames.locator('button')).toHaveCount(0)
+  await expect(imageFrames.locator('video, iframe')).toHaveCount(0)
+  await expect(page.locator('[data-media-type="localVideo"], [data-media-type="externalVideo"]')).toHaveCount(0)
+})

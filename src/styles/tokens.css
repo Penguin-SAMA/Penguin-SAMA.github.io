@@ -1,0 +1,125 @@
+:root {
+  color-scheme: dark;
+
+  /* Typeface stacks stay local-first: no remote font request is required. */
+  --font-sans: Inter, "Noto Sans SC", "Source Han Sans SC", "PingFang SC",
+    "Microsoft YaHei", "Helvetica Neue", Arial, sans-serif;
+  --font-display: Inter, "Noto Sans SC", "Source Han Sans SC", "PingFang SC",
+    "Microsoft YaHei", "Helvetica Neue", Arial, sans-serif;
+  --font-mono: "Cascadia Code", "SFMono-Regular", Consolas, "Liberation Mono",
+    monospace;
+
+  /* Dark graphite palette sampled and normalized from the accepted concept. */
+  --color-canvas: #04080b;
+  --color-canvas-raised: #071016;
+  --color-surface: #0a1218;
+  --color-surface-strong: #0d151b;
+  --color-text: #f5f6f4;
+  --color-text-secondary: #b1b7bc;
+  --color-text-muted: #7d858c;
+  --color-text-ghost: #4b5157;
+  --color-accent: #1b9cf5;
+  --color-accent-bright: #2cb8ff;
+  --color-accent-line: #168fd8;
+  --color-accent-deep: #16415b;
+  --color-ember: #ff6a1a;
+  --color-ember-soft: #ff8a2a;
+  --color-border: #59636c;
+  --color-border-subtle: #24323b;
+  --color-border-accent: #16415b;
+
+  --accent-wash: rgb(27 156 245 / 10%);
+  --accent-wash-strong: rgb(27 156 245 / 18%);
+  --surface-glass: rgb(7 16 22 / 86%);
+  --canvas-overlay: rgb(4 8 11 / 90%);
+
+  /* Fluid typography shared by content and controls. */
+  --text-xs: 0.75rem;
+  --text-sm: clamp(0.8125rem, 0.15vw + 0.78rem, 0.9375rem);
+  --text-base: clamp(0.9375rem, 0.22vw + 0.89rem, 1.125rem);
+  --text-lg: clamp(1.0625rem, 0.35vw + 0.98rem, 1.375rem);
+  --text-xl: clamp(1.375rem, 0.5vw + 1.25rem, 1.875rem);
+  --text-2xl: clamp(1.875rem, 0.95vw + 1.62rem, 2.75rem);
+  --text-hero: clamp(2.625rem, 4vw + 1.2rem, 5.125rem);
+  --line-compact: 1.15;
+  --line-heading: 1.24;
+  --line-body: 1.72;
+  --tracking-display: -0.03em;
+  --tracking-heading: -0.015em;
+  --tracking-control: 0.01em;
+
+  /* Spacing and container geometry. */
+  --space-1: 0.25rem;
+  --space-2: 0.5rem;
+  --space-3: 0.75rem;
+  --space-4: 1rem;
+  --space-5: 1.5rem;
+  --space-6: 2rem;
+  --space-7: 3rem;
+  --space-8: 4rem;
+  --space-9: 6rem;
+  --space-10: 8rem;
+  --container-max: 90rem;
+  --content-max: 71.25rem;
+  --page-gutter: clamp(1.25rem, 4vw, 4rem);
+  --section-space: clamp(5.5rem, 8vw, 7.5rem);
+  --header-height: 5.5rem;
+  --control-height: 4.25rem;
+
+  /* The reference is angular and technical, never pill-shaped. */
+  --radius-xs: 0.125rem;
+  --radius-sm: 0.25rem;
+  --radius-md: 0.375rem;
+  --chamfer-sm: 0.5rem;
+  --chamfer-md: 0.75rem;
+  --chamfer-lg: 1.125rem;
+  --hairline: 1px;
+
+  --shadow-media: 0 1.5rem 5rem rgb(0 0 0 / 34%);
+  --shadow-control: 0 0 0 1px rgb(27 156 245 / 8%);
+  --shadow-focus: 0 0 0 0.25rem rgb(27 156 245 / 18%);
+
+  --duration-fast: 160ms;
+  --duration-base: 280ms;
+  --duration-reveal: 640ms;
+  --ease-standard: cubic-bezier(0.22, 1, 0.36, 1);
+  --ease-ui: cubic-bezier(0.2, 0, 0, 1);
+
+  --z-content: 1;
+  --z-header: 40;
+  --z-overlay: 80;
+  --z-skip-link: 100;
+
+  /* Compatibility aliases for small primitives and early components. */
+  --bg: var(--color-canvas);
+  --text-h: var(--color-text);
+  --text: var(--color-text-secondary);
+  --border: var(--color-border-subtle);
+  --accent: var(--color-accent);
+  --accent-bg: var(--accent-wash);
+  --accent-border: var(--color-accent-line);
+  --code-bg: var(--color-surface);
+  --social-bg: var(--color-canvas-raised);
+  --shadow: var(--shadow-media);
+  --sans: var(--font-sans);
+  --heading: var(--font-display);
+  --mono: var(--font-mono);
+}
+
+@media (max-width: 68.75rem) {
+  :root {
+    --page-gutter: clamp(1.5rem, 3.5vw, 2.5rem);
+    --section-space: clamp(4.75rem, 8vw, 6rem);
+    --header-height: 4.75rem;
+    --control-height: 3.75rem;
+  }
+}
+
+@media (max-width: 48rem) {
+  :root {
+    --page-gutter: clamp(1.25rem, 5.5vw, 1.5rem);
+    --section-space: clamp(4.25rem, 15vw, 5rem);
+    --header-height: 4.25rem;
+    --control-height: 3.5rem;
+  }
+}
