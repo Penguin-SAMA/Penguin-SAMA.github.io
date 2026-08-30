@@ -129,6 +129,24 @@ test('language switch updates copy, document language, and the URL query', async
   expect(new URL(page.url()).searchParams.get('lang')).toBe('en')
 })
 
+test('game project tags use distinct tinted backgrounds', async ({ page }) => {
+  await openPortfolio(page, { width: 1440, height: 900 })
+
+  const expectedCounts = [7, 4, 3]
+  for (let projectIndex = 0; projectIndex < expectedCounts.length; projectIndex += 1) {
+    const card = page.getByTestId('project-card').nth(projectIndex)
+    await card.scrollIntoViewIfNeeded()
+    const tags = card.getByRole('list', { name: '项目标签' }).getByRole('listitem')
+    await expect(tags).toHaveCount(expectedCounts[projectIndex] ?? 0)
+
+    const backgrounds = await tags.evaluateAll((items) =>
+      items.map((item) => getComputedStyle(item).backgroundImage),
+    )
+    expect(new Set(backgrounds).size).toBe(backgrounds.length)
+    expect(backgrounds.every((background) => background !== 'none')).toBe(true)
+  }
+})
+
 test('mobile menu can be opened and navigated using only the keyboard', async ({ page }) => {
   await openPortfolio(page, { width: 390, height: 844 })
 

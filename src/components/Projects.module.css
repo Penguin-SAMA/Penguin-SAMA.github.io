@@ -160,21 +160,59 @@
 .tags {
   display: flex;
   flex-wrap: wrap;
+  gap: 0.48rem;
   margin: 1.6rem 0 0;
   padding: 0;
 }
 
 .tags li {
-  color: var(--color-text-secondary);
+  --tag-rgb: 63 170 255;
+
+  padding: 0.36rem 0.62rem;
+  border: 1px solid rgb(var(--tag-rgb) / 46%);
+  clip-path: polygon(0.38rem 0, 100% 0, 100% calc(100% - 0.38rem), calc(100% - 0.38rem) 100%, 0 100%, 0 0.38rem);
+  color: var(--color-text);
+  background:
+    linear-gradient(135deg, rgb(var(--tag-rgb) / 24%), rgb(var(--tag-rgb) / 8%));
+  box-shadow:
+    inset 0 -1px 0 rgb(var(--tag-rgb) / 55%),
+    0 0.35rem 1.1rem rgb(var(--tag-rgb) / 7%);
   font-family: var(--font-mono);
-  font-size: 0.67rem;
-  letter-spacing: 0.04em;
+  font-size: 0.62rem;
+  font-weight: 650;
+  letter-spacing: 0.035em;
+  line-height: 1.2;
+  transition: transform 180ms var(--ease-standard), border-color 180ms var(--ease-standard);
 }
 
-.tags li:not(:last-child)::after {
-  margin-inline: 0.52rem;
-  color: var(--color-accent-deep);
-  content: '/';
+.tags li:hover {
+  border-color: rgb(var(--tag-rgb) / 78%);
+  transform: translateY(-1px);
+}
+
+.tags li[data-tone='engine'] { --tag-rgb: 40 165 255; }
+.tags li[data-tone='blueprint'] { --tag-rgb: 130 108 255; }
+.tags li[data-tone='code'] { --tag-rgb: 255 174 65; }
+.tags li[data-tone='network'] { --tag-rgb: 48 211 226; }
+.tags li[data-tone='ability'] { --tag-rgb: 255 91 105; }
+.tags li[data-tone='procedural'] { --tag-rgb: 76 210 139; }
+.tags li[data-tone='release'] { --tag-rgb: 255 119 56; }
+.tags li[data-tone='godot'] { --tag-rgb: 85 171 238; }
+.tags li[data-tone='codex'] { --tag-rgb: 67 205 180; }
+.tags li[data-tone='assets'] { --tag-rgb: 218 104 255; }
+.tags li[data-tone='competition'] { --tag-rgb: 245 196 66; }
+.tags li[data-tone='practice'] { --tag-rgb: 153 166 181; }
+.tags li[data-tone='graphics'] { --tag-rgb: 89 120 255; }
+.tags li[data-tone='tooling'] { --tag-rgb: 119 220 104; }
+
+@media (prefers-reduced-motion: reduce) {
+  .tags li {
+    transition: none;
+  }
+
+  .tags li:hover {
+    transform: none;
+  }
 }
 
 .links {

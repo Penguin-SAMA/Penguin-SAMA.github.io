@@ -62,7 +62,7 @@ describe('portfolio page', () => {
     })
   })
 
-  it('keeps the four resume projects in strict order', () => {
+  it('keeps the four projects in the requested order', () => {
     render(<App />)
 
     const cards = screen.getAllByTestId('project-card')
@@ -70,6 +70,22 @@ describe('portfolio page', () => {
     expect(
       cards.map((card) => within(card).getByRole('heading', { level: 3 }).textContent),
     ).toEqual(projectTitles)
+  })
+
+  it('renders the requested labels for all three game projects', () => {
+    render(<App />)
+
+    const expectedTags = [
+      ['UE5.6', '蓝图', 'C++', '多人联机', 'GAS', 'PCG', '目标发售项目'],
+      ['Godot', 'Codex', 'AI 素材', '腾讯游戏创作大赛作品'],
+      ['UE5.8', '蓝图', '个人练手 DEMO'],
+    ]
+
+    screen.getAllByTestId('project-card').slice(0, 3).forEach((card, index) => {
+      const tagList = within(card).getByRole('list', { name: '项目标签' })
+      expect(within(tagList).getAllByRole('listitem').map((tag) => tag.textContent))
+        .toEqual(expectedTags[index])
+    })
   })
 
   it('uses the exact public email and GitHub destinations', () => {

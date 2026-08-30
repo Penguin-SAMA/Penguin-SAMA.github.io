@@ -39,6 +39,27 @@ export interface ProjectLink {
   label: LocalizedText
 }
 
+export type ProjectTagTone =
+  | 'engine'
+  | 'blueprint'
+  | 'code'
+  | 'network'
+  | 'ability'
+  | 'procedural'
+  | 'release'
+  | 'godot'
+  | 'codex'
+  | 'assets'
+  | 'competition'
+  | 'practice'
+  | 'graphics'
+  | 'tooling'
+
+export interface ProjectTag {
+  label: LocalizedText
+  tone: ProjectTagTone
+}
+
 export interface Project {
   slug: string
   title: LocalizedText
@@ -46,7 +67,7 @@ export interface Project {
   summary: LocalizedText
   showcaseNote?: LocalizedText
   highlights: LocalizedText[]
-  tags: string[]
+  tags: ProjectTag[]
   media: MediaItem[]
   links?: ProjectLink[]
 }
@@ -163,6 +184,9 @@ export const siteCopy = {
     label: { zh: '项目媒体图集', en: 'Project media gallery' },
     select: { zh: '切换至', en: 'Show' },
   },
+  projectTags: {
+    label: { zh: '项目标签', en: 'Project tags' },
+  },
   footer: {
     copyright: {
       zh: '© {year} 毛启德。保留所有权利。',
@@ -205,7 +229,15 @@ export const projects: Project[] = [
         en: 'Integrated PCG and GAS to support procedural content generation and efficient production.',
       },
     ],
-    tags: ['UE5.6', 'C++', 'Blueprint', 'PCG', 'GAS'],
+    tags: [
+      { label: { zh: 'UE5.6', en: 'UE5.6' }, tone: 'engine' },
+      { label: { zh: '蓝图', en: 'Blueprints' }, tone: 'blueprint' },
+      { label: { zh: 'C++', en: 'C++' }, tone: 'code' },
+      { label: { zh: '多人联机', en: 'Multiplayer' }, tone: 'network' },
+      { label: { zh: 'GAS', en: 'GAS' }, tone: 'ability' },
+      { label: { zh: 'PCG', en: 'PCG' }, tone: 'procedural' },
+      { label: { zh: '目标发售项目', en: 'Targeting Release' }, tone: 'release' },
+    ],
     media: [
       {
         type: 'localVideo',
@@ -365,7 +397,18 @@ export const projects: Project[] = [
         en: 'Used an AI-assisted workflow to produce some of the game’s art and music assets.',
       },
     ],
-    tags: ['Godot', 'GDScript', 'RAG', 'AI Workflow'],
+    tags: [
+      { label: { zh: 'Godot', en: 'Godot' }, tone: 'godot' },
+      { label: { zh: 'Codex', en: 'Codex' }, tone: 'codex' },
+      { label: { zh: 'AI 素材', en: 'AI Assets' }, tone: 'assets' },
+      {
+        label: {
+          zh: '腾讯游戏创作大赛作品',
+          en: 'Tencent Game Creation Competition Entry',
+        },
+        tone: 'competition',
+      },
+    ],
     media: [
       {
         type: 'localVideo',
@@ -411,7 +454,11 @@ export const projects: Project[] = [
         en: 'Used Codex with Unreal MCP to explore AI-assisted game development.',
       },
     ],
-    tags: ['UE5', 'Blueprint', 'Codex', 'Unreal MCP'],
+    tags: [
+      { label: { zh: 'UE5.8', en: 'UE5.8' }, tone: 'engine' },
+      { label: { zh: '蓝图', en: 'Blueprints' }, tone: 'blueprint' },
+      { label: { zh: '个人练手 DEMO', en: 'Personal Practice Demo' }, tone: 'practice' },
+    ],
     media: [
       {
         type: 'image',
@@ -448,7 +495,14 @@ export const projects: Project[] = [
         en: 'Investigated modules, separated boundaries, and resolved issues around the shader library, resource loading, and rendering abstractions.',
       },
     ],
-    tags: ['C++20', 'OpenGL', 'Vulkan', 'Metal', 'Lua', 'xmake'],
+    tags: [
+      { label: { zh: 'C++20', en: 'C++20' }, tone: 'code' },
+      { label: { zh: 'OpenGL', en: 'OpenGL' }, tone: 'graphics' },
+      { label: { zh: 'Vulkan', en: 'Vulkan' }, tone: 'ability' },
+      { label: { zh: 'Metal', en: 'Metal' }, tone: 'engine' },
+      { label: { zh: 'Lua', en: 'Lua' }, tone: 'assets' },
+      { label: { zh: 'xmake', en: 'xmake' }, tone: 'tooling' },
+    ],
     media: [
       {
         type: 'image',

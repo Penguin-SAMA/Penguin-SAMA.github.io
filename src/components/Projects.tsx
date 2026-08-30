@@ -68,8 +68,16 @@ export function Projects({ locale }: ProjectsProps) {
                     ))}
                   </ul>
 
-                  <ul className={styles.tags} role="list" aria-label="Technology tags">
-                    {project.tags.map((tag) => <li key={tag}>{tag}</li>)}
+                  <ul
+                    className={styles.tags}
+                    role="list"
+                    aria-label={localize(siteCopy.projectTags.label, locale)}
+                  >
+                    {project.tags.map((tag) => (
+                      <li key={`${tag.tone}-${tag.label.en}`} data-tone={tag.tone}>
+                        {localize(tag.label, locale)}
+                      </li>
+                    ))}
                   </ul>
 
                   {project.links?.length ? (
