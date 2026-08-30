@@ -190,8 +190,8 @@ test('placeholder media stays passive while the Reforge gallery switches real me
 
   const imageFrames = page.locator('[data-media-type="image"]')
   const placeholderLabels = page.getByText('项目素材待补充', { exact: true })
-  await expect(imageFrames).toHaveCount(3)
-  await expect(placeholderLabels).toHaveCount(4)
+  await expect(imageFrames).toHaveCount(2)
+  await expect(placeholderLabels).toHaveCount(3)
 
   for (let index = 0; index < await placeholderLabels.count(); index += 1) {
     const mediaContainer = placeholderLabels.nth(index).locator('xpath=ancestor::*[img][1]')
@@ -202,7 +202,7 @@ test('placeholder media stays passive while the Reforge gallery switches real me
   await expect(imageFrames.locator('button')).toHaveCount(0)
   await expect(imageFrames.locator('video, iframe')).toHaveCount(0)
 
-  const reforgeCard = page.getByTestId('project-card').nth(1)
+  const reforgeCard = page.getByTestId('project-card').nth(0)
   await reforgeCard.scrollIntoViewIfNeeded()
   const gameplayVideo = reforgeCard.getByLabel('Reforge 原型演示视频', { exact: true })
   await expect(gameplayVideo).toBeVisible()
@@ -220,4 +220,16 @@ test('placeholder media stays passive while the Reforge gallery switches real me
   await expect(reforgeCard.getByLabel('主角 GAS 系统演示', { exact: true })).toBeVisible()
   await expect(reforgeCard.getByLabel('主角 GAS 系统演示', { exact: true }).locator('source'))
     .toHaveAttribute('src', '/media/projects/reforge/character-gas.mp4')
+
+  const changjiangCard = page.getByTestId('project-card').nth(1)
+  await changjiangCard.scrollIntoViewIfNeeded()
+  const changjiangVideo = changjiangCard.getByLabel('《长江行》游戏演示', { exact: true })
+  await expect(changjiangVideo).toBeVisible()
+  await expect(changjiangVideo).toHaveAttribute('poster', '/media/projects/changjiang-journey/changjiang-journey-poster.webp')
+  await expect(changjiangVideo.locator('source')).toHaveAttribute(
+    'src',
+    '/media/projects/changjiang-journey/changjiang-journey-demo.mp4',
+  )
+  await expect(changjiangCard.getByText(/01 \/ 01/)).toBeVisible()
+  await changjiangCard.screenshot({ path: testInfo.outputPath('changjiang-journey-1440.png') })
 })

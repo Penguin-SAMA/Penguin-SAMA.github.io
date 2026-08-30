@@ -6,9 +6,9 @@ import App from './App'
 import { LOCALE_STORAGE_KEY } from './hooks/useLocale'
 
 const projectTitles = [
-  '基于 UE5.8 的第一人称射击游戏 DEMO',
   '基于 UE5.6 的俯视角多人联机生存建造游戏',
-  '基于 Godot 的武汉历史文化文字冒险游戏',
+  '《长江行》——基于 Godot 的武汉历史文化文字冒险游戏',
+  '基于 UE5.8 的第一人称射击游戏 DEMO',
   'Hazel C++ 游戏引擎的现代化改造',
 ]
 
@@ -123,7 +123,7 @@ describe('portfolio page', () => {
     render(<App />)
 
     const cards = screen.getAllByTestId('project-card')
-    ;[cards[0], cards[2], cards[3]].forEach((card) => {
+    ;[cards[2], cards[3]].forEach((card) => {
       if (!card) throw new Error('Expected placeholder project card')
       const image = within(card).getByRole('img')
       expect(image).toHaveAttribute('src', expect.stringMatching(/^\/media\/placeholders\/.+\.webp$/))
@@ -132,7 +132,7 @@ describe('portfolio page', () => {
       expect(within(card).queryByRole('link')).not.toBeInTheDocument()
     })
 
-    const reforgeCard = cards[1]
+    const reforgeCard = cards[0]
     if (!reforgeCard) throw new Error('Expected Reforge project card')
     const reforge = within(reforgeCard)
     const video = reforge.getByLabelText('Reforge 原型演示视频')
@@ -146,6 +146,18 @@ describe('portfolio page', () => {
     expect(reforge.getByRole('img', { name: 'Unreal Engine 编辑器中的仓库营地场景' }))
       .toHaveAttribute('src', '/media/projects/reforge/reforge-overview.webp')
     expect(reforge.getByText(/World Partition \/ HLOD/)).toBeInTheDocument()
+
+    const changjiangCard = cards[1]
+    if (!changjiangCard) throw new Error('Expected Changjiang Journey project card')
+    const changjiang = within(changjiangCard)
+    const changjiangVideo = changjiang.getByLabelText('《长江行》游戏演示')
+    expect(changjiangVideo).toHaveAttribute('controls')
+    expect(changjiangVideo).toHaveAttribute(
+      'poster',
+      '/media/projects/changjiang-journey/changjiang-journey-poster.webp',
+    )
+    expect(changjiang.getByText(/01 \/ 01/)).toBeInTheDocument()
+    expect(changjiang.getByText(/Godot 编辑器中的实际运行/)).toBeInTheDocument()
 
     expect(screen.queryByText(/查看详情|View details/i)).not.toBeInTheDocument()
   })

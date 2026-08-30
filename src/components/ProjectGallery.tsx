@@ -30,10 +30,6 @@ export function ProjectGallery({ items, locale, priority = false }: ProjectGalle
 
   if (!activeItem) return null
 
-  if (items.length === 1) {
-    return <ProjectMedia item={activeItem} locale={locale} priority={priority} />
-  }
-
   return (
     <div className={styles.gallery} aria-label={localize(siteCopy.mediaGallery.label, locale)}>
       <ProjectMedia
@@ -43,32 +39,36 @@ export function ProjectGallery({ items, locale, priority = false }: ProjectGalle
         priority={priority && activeIndex === 0}
       />
 
-      <div className={styles.meta} aria-live="polite">
-        <p>{localize(activeItem.caption ?? activeItem.title ?? activeItem.alt, locale)}</p>
-        <span>{String(activeIndex + 1).padStart(2, '0')} / {String(items.length).padStart(2, '0')}</span>
-      </div>
+      {activeItem.caption || items.length > 1 ? (
+        <div className={styles.meta} aria-live="polite">
+          <p>{localize(activeItem.caption ?? activeItem.title ?? activeItem.alt, locale)}</p>
+          <span>{String(activeIndex + 1).padStart(2, '0')} / {String(items.length).padStart(2, '0')}</span>
+        </div>
+      ) : null}
 
-      <div className={styles.rail} role="group" aria-label={localize(siteCopy.mediaGallery.label, locale)}>
-        {items.map((item, index) => {
-          const thumbnail = getThumbnail(item)
-          const label = getMediaLabel(item, locale)
+      {items.length > 1 ? (
+        <div className={styles.rail} role="group" aria-label={localize(siteCopy.mediaGallery.label, locale)}>
+          {items.map((item, index) => {
+            const thumbnail = getThumbnail(item)
+            const label = getMediaLabel(item, locale)
 
-          return (
-            <button
-              key={`${item.type}-${getMediaKey(item)}`}
-              type="button"
-              className={styles.thumbnail}
-              aria-label={`${localize(siteCopy.mediaGallery.select, locale)}：${label}`}
-              aria-current={index === activeIndex ? 'true' : undefined}
-              onClick={() => setActiveIndex(index)}
-            >
-              {thumbnail ? <img src={thumbnail} alt="" loading="lazy" decoding="async" /> : null}
-              {item.type !== 'image' ? <IconPlayerPlay aria-hidden="true" /> : null}
-              <span aria-hidden="true">{String(index + 1).padStart(2, '0')}</span>
-            </button>
-          )
-        })}
-      </div>
+            return (
+              <button
+                key={`${item.type}-${getMediaKey(item)}`}
+                type="button"
+                className={styles.thumbnail}
+                aria-label={`${localize(siteCopy.mediaGallery.select, locale)}：${label}`}
+                aria-current={index === activeIndex ? 'true' : undefined}
+                onClick={() => setActiveIndex(index)}
+              >
+                {thumbnail ? <img src={thumbnail} alt="" loading="lazy" decoding="async" /> : null}
+                {item.type !== 'image' ? <IconPlayerPlay aria-hidden="true" /> : null}
+                <span aria-hidden="true">{String(index + 1).padStart(2, '0')}</span>
+              </button>
+            )
+          })}
+        </div>
+      ) : null}
     </div>
   )
 }

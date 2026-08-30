@@ -178,47 +178,6 @@ export const siteCopy = {
 
 export const projects: Project[] = [
   {
-    slug: 'ue5-fps-demo',
-    title: {
-      zh: '基于 UE5.8 的第一人称射击游戏 DEMO',
-      en: 'UE5.8 First-Person Shooter Demo',
-    },
-    status: {
-      zh: '项目前中期',
-      en: 'Early-to-mid development',
-    },
-    summary: {
-      zh: '使用 UE5.8 开发的第一人称射击游戏 DEMO，尝试复刻《彩虹六号：围攻》《三角洲行动》《PUBG》等游戏的操作体验。',
-      en: 'An early-to-mid-development first-person shooter demo built with UE5.8, focused on recreating the interaction feel of Rainbow Six Siege, Delta Force, and PUBG.',
-    },
-    highlights: [
-      {
-        zh: '运用 UE 蓝图设计站立、行走、奔跑、蹲伏、趴下与翻越等角色动画。',
-        en: 'Built character animation behavior for standing, walking, running, crouching, going prone, and vaulting with Unreal Blueprints.',
-      },
-      {
-        zh: '完成枪械模块化组件与多种投掷物设计。',
-        en: 'Designed modular weapon components and multiple throwable types.',
-      },
-      {
-        zh: '使用 Codex 配合 Unreal MCP，探索 AI 协同游戏开发。',
-        en: 'Used Codex with Unreal MCP to explore AI-assisted game development.',
-      },
-    ],
-    tags: ['UE5', 'Blueprint', 'Codex', 'Unreal MCP'],
-    media: [
-      {
-        type: 'image',
-        src: '/media/placeholders/project-fps-systems.webp',
-        alt: {
-          zh: '第一人称射击 DEMO 的抽象技术封面占位图',
-          en: 'Abstract technical placeholder cover for the first-person shooter demo',
-        },
-        isPlaceholder: true,
-      },
-    ],
-  },
-  {
     slug: 'ue5-survival-building',
     title: {
       zh: '基于 UE5.6 的俯视角多人联机生存建造游戏',
@@ -377,16 +336,20 @@ export const projects: Project[] = [
   {
     slug: 'wuhan-cultural-adventure',
     title: {
-      zh: '基于 Godot 的武汉历史文化文字冒险游戏',
-      en: 'Godot Wuhan History and Culture Text Adventure',
+      zh: '《长江行》——基于 Godot 的武汉历史文化文字冒险游戏',
+      en: 'Changjiang Journey — Godot Wuhan Cultural Text Adventure',
     },
     status: {
       zh: '腾讯游戏创作大赛项目',
       en: 'Tencent Game Creation Competition Project',
     },
     summary: {
-      zh: '每个小关围绕一位 NPC 的“文化长河”，并通过独特的小游戏呈现对该 NPC 的理解。',
-      en: 'Each stage follows one NPC’s cultural journey and uses a distinct minigame to express an understanding of that NPC.',
+      zh: '《长江行》以长江文化为叙事线索，每个小关围绕一位 NPC 的“文化长河”，并通过独特的小游戏呈现对该 NPC 的理解。',
+      en: 'Changjiang Journey follows the culture of the Yangtze River as its narrative thread. Each stage explores one NPC’s cultural journey through a distinct minigame.',
+    },
+    showcaseNote: {
+      zh: '演示视频记录了游戏在 Godot 编辑器中的实际运行，包含青铜面具拼合小游戏、舟行叙事场景与玩家自定义文本对话流程。',
+      en: 'The video captures the game running inside the Godot editor, including the bronze-mask assembly minigame, the river-journey narrative scene, and the player-written dialogue flow.',
     },
     highlights: [
       {
@@ -405,11 +368,57 @@ export const projects: Project[] = [
     tags: ['Godot', 'GDScript', 'RAG', 'AI Workflow'],
     media: [
       {
-        type: 'image',
-        src: '/media/placeholders/project-wuhan-rag.webp',
+        type: 'localVideo',
+        src: '/media/projects/changjiang-journey/changjiang-journey-demo.mp4',
+        poster: '/media/projects/changjiang-journey/changjiang-journey-poster.webp',
+        title: { zh: '《长江行》游戏演示', en: 'Changjiang Journey gameplay demo' },
         alt: {
-          zh: '武汉历史文化文字冒险项目的抽象叙事封面占位图',
-          en: 'Abstract narrative placeholder cover for the Wuhan history and culture adventure',
+          zh: '《长江行》舟行叙事与 NPC 对话画面',
+          en: 'River-journey narrative and NPC dialogue scene from Changjiang Journey',
+        },
+        caption: {
+          zh: '实际运行演示：通过青铜面具拼合小游戏和舟行对话场景，展示章节叙事、文化交互与自定义文本输入流程。',
+          en: 'Running demo of the bronze-mask assembly minigame and river dialogue scene, showing chapter storytelling, cultural interactions, and custom text input.',
+        },
+      },
+    ],
+  },
+  {
+    slug: 'ue5-fps-demo',
+    title: {
+      zh: '基于 UE5.8 的第一人称射击游戏 DEMO',
+      en: 'UE5.8 First-Person Shooter Demo',
+    },
+    status: {
+      zh: '项目前中期',
+      en: 'Early-to-mid development',
+    },
+    summary: {
+      zh: '使用 UE5.8 开发的第一人称射击游戏 DEMO，尝试复刻《彩虹六号：围攻》《三角洲行动》《PUBG》等游戏的操作体验。',
+      en: 'An early-to-mid-development first-person shooter demo built with UE5.8, focused on recreating the interaction feel of Rainbow Six Siege, Delta Force, and PUBG.',
+    },
+    highlights: [
+      {
+        zh: '运用 UE 蓝图设计站立、行走、奔跑、蹲伏、趴下与翻越等角色动画。',
+        en: 'Built character animation behavior for standing, walking, running, crouching, going prone, and vaulting with Unreal Blueprints.',
+      },
+      {
+        zh: '完成枪械模块化组件与多种投掷物设计。',
+        en: 'Designed modular weapon components and multiple throwable types.',
+      },
+      {
+        zh: '使用 Codex 配合 Unreal MCP，探索 AI 协同游戏开发。',
+        en: 'Used Codex with Unreal MCP to explore AI-assisted game development.',
+      },
+    ],
+    tags: ['UE5', 'Blueprint', 'Codex', 'Unreal MCP'],
+    media: [
+      {
+        type: 'image',
+        src: '/media/placeholders/project-fps-systems.webp',
+        alt: {
+          zh: '第一人称射击 DEMO 的抽象技术封面占位图',
+          en: 'Abstract technical placeholder cover for the first-person shooter demo',
         },
         isPlaceholder: true,
       },
