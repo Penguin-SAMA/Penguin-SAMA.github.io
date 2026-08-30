@@ -123,6 +123,16 @@
   line-height: 1.75;
 }
 
+.showcaseNote {
+  margin-top: 1rem;
+  padding: 0.8rem 0.9rem;
+  border-left: 2px solid var(--color-accent-line);
+  color: var(--color-text-muted);
+  background: rgb(22 143 216 / 5%);
+  font-size: 0.76rem;
+  line-height: 1.65;
+}
+
 .highlights {
   display: grid;
   gap: 0.75rem;

@@ -5,30 +5,34 @@ export interface LocalizedText {
   en: string
 }
 
-export type MediaItem =
-  | {
+interface MediaCopy {
+  alt: LocalizedText
+  title?: LocalizedText
+  caption?: LocalizedText
+}
+
+export type MediaItem = MediaCopy &
+  (
+    | {
       type: 'image'
       src: string
-      alt: LocalizedText
       isPlaceholder: boolean
     }
-  | {
+    | {
       type: 'localVideo'
       src: string
       poster?: string
-      alt: LocalizedText
-      title?: LocalizedText
       isPlaceholder?: false
     }
-  | {
+    | {
       type: 'externalVideo'
       provider: 'bilibili' | 'youtube'
       embedUrl: string
       poster: string
-      alt: LocalizedText
       title: LocalizedText
       isPlaceholder?: false
     }
+  )
 
 export interface ProjectLink {
   href: string
@@ -40,6 +44,7 @@ export interface Project {
   title: LocalizedText
   status?: LocalizedText
   summary: LocalizedText
+  showcaseNote?: LocalizedText
   highlights: LocalizedText[]
   tags: string[]
   media: MediaItem[]
@@ -154,6 +159,10 @@ export const siteCopy = {
     zh: '项目素材待补充',
     en: 'Project media coming soon',
   },
+  mediaGallery: {
+    label: { zh: '项目媒体图集', en: 'Project media gallery' },
+    select: { zh: '切换至', en: 'Show' },
+  },
   footer: {
     copyright: {
       zh: '© {year} 毛启德。保留所有权利。',
@@ -223,6 +232,10 @@ export const projects: Project[] = [
       zh: '使用 UE5.6 开发的后末日题材俯视角生存游戏，核心玩法机制参考《僵尸毁灭工程》《深岩银河》等作品。',
       en: 'A post-apocalyptic top-down survival game built with UE5.6, with core mechanics inspired by Project Zomboid and Deep Rock Galactic.',
     },
+    showcaseNote: {
+      zh: '以下素材记录了当前原型的俯视角战斗、角色与 NPC 系统，以及 PCG 森林、营地和大地图地形构建过程。',
+      en: 'The media below documents the current prototype’s top-down combat, character and NPC systems, plus the PCG forest, camp, and large-world terrain workflow.',
+    },
     highlights: [
       {
         zh: '结合 UE C++ 与蓝图系统，完成基础地形构建及游戏前期关键功能开发。',
@@ -236,13 +249,128 @@ export const projects: Project[] = [
     tags: ['UE5.6', 'C++', 'Blueprint', 'PCG', 'GAS'],
     media: [
       {
-        type: 'image',
-        src: '/media/placeholders/project-survival-pcg.webp',
+        type: 'localVideo',
+        src: '/media/projects/reforge/reforge-gameplay.mp4',
+        poster: '/media/projects/reforge/reforge-gameplay-poster.webp',
+        title: { zh: 'Reforge 原型演示视频', en: 'Reforge prototype demo video' },
         alt: {
-          zh: '俯视角生存建造项目的抽象系统封面占位图',
-          en: 'Abstract systems placeholder cover for the top-down survival-building project',
+          zh: '俯视角生存游戏原型的战斗与场景演示',
+          en: 'Combat and environment demo from the top-down survival prototype',
         },
-        isPlaceholder: true,
+        caption: {
+          zh: '原型实机：展示俯视角移动、战斗交互与开放场景中的基础游戏循环。',
+          en: 'Prototype gameplay showing top-down movement, combat interactions, and the core loop across an open environment.',
+        },
+      },
+      {
+        type: 'image',
+        src: '/media/projects/reforge/reforge-overview.webp',
+        title: { zh: '项目场景概览', en: 'Project environment overview' },
+        alt: { zh: 'Unreal Engine 编辑器中的仓库营地场景', en: 'Warehouse camp environment in the Unreal Engine editor' },
+        caption: {
+          zh: '场景概览：仓库营地、周边植被与 World Partition / HLOD 分区实例。',
+          en: 'Environment overview with the warehouse camp, surrounding foliage, and World Partition / HLOD instances.',
+        },
+        isPlaceholder: false,
+      },
+      {
+        type: 'image',
+        src: '/media/projects/reforge/world-terrain.webp',
+        title: { zh: '大地图地形', en: 'Large-world terrain' },
+        alt: { zh: 'Unreal Engine 中的大尺度山地地形', en: 'Large-scale mountain terrain in Unreal Engine' },
+        caption: {
+          zh: '地形构建：基于 M4 与区域高度数据生成的全图地貌。',
+          en: 'Terrain workflow: full-map landform generated from M4 and area height data.',
+        },
+        isPlaceholder: false,
+      },
+      {
+        type: 'image',
+        src: '/media/projects/reforge/pcg-forest-result.webp',
+        title: { zh: 'PCG 森林生成效果', en: 'PCG forest result' },
+        alt: { zh: '程序化生成的森林区域', en: 'Procedurally generated forest area' },
+        caption: {
+          zh: 'PCG 森林：在指定边界内生成树木、石块与地表植被的场景效果。',
+          en: 'PCG forest result with trees, rocks, and ground vegetation generated inside a defined boundary.',
+        },
+        isPlaceholder: false,
+      },
+      {
+        type: 'image',
+        src: '/media/projects/reforge/pcg-forest-graph.webp',
+        title: { zh: 'PCG 森林图表', en: 'PCG forest graph' },
+        alt: { zh: '用于森林生成的 PCG 节点图', en: 'PCG node graph used to generate the forest' },
+        caption: {
+          zh: '森林图表：按植被类型分支，组合表面采样、密度过滤、尺寸变换与边界修改。',
+          en: 'Forest graph branching by foliage type and combining surface sampling, density filtering, scaling, and boundary modification.',
+        },
+        isPlaceholder: false,
+      },
+      {
+        type: 'image',
+        src: '/media/projects/reforge/pcg-camp-result.webp',
+        title: { zh: 'PCG 营地生成效果', en: 'PCG camp result' },
+        alt: { zh: '程序化生成的围栏营地', en: 'Procedurally generated fenced camp' },
+        caption: {
+          zh: 'PCG 营地：组合围栏、集装箱、路障与杂物的随机化据点场景。',
+          en: 'PCG camp result combining fences, containers, barricades, and clutter into a randomized outpost.',
+        },
+        isPlaceholder: false,
+      },
+      {
+        type: 'image',
+        src: '/media/projects/reforge/pcg-camp-graph.webp',
+        title: { zh: 'PCG 营地图表', en: 'PCG camp graph' },
+        alt: { zh: '用于营地生成的 PCG 节点图', en: 'PCG node graph used to generate the camp' },
+        caption: {
+          zh: '营地图表：从输入采样点出发，通过边界、随机选择与投影节点完成布局。',
+          en: 'Camp graph arranging sampled points through boundary, random selection, and projection nodes.',
+        },
+        isPlaceholder: false,
+      },
+      {
+        type: 'image',
+        src: '/media/projects/reforge/player-character.webp',
+        title: { zh: '主角外形与持枪姿态', en: 'Player character and weapon pose' },
+        alt: { zh: '主角模型与持枪姿态调试画面', en: 'Player model and weapon pose debug view' },
+        caption: {
+          zh: '角色原型：主角外形、持枪姿态与角色胶囊的编辑器调试画面。',
+          en: 'Character prototype showing the player appearance, weapon pose, and capsule setup in the editor.',
+        },
+        isPlaceholder: false,
+      },
+      {
+        type: 'localVideo',
+        src: '/media/projects/reforge/character-gas.mp4',
+        poster: '/media/projects/reforge/character-gas-poster.webp',
+        title: { zh: '主角 GAS 系统演示', en: 'Player GAS system walkthrough' },
+        alt: { zh: '主角 Gameplay Ability System 蓝图演示', en: 'Player Gameplay Ability System Blueprint walkthrough' },
+        caption: {
+          zh: 'GAS 开发记录：展示角色能力蓝图的配置与触发逻辑。',
+          en: 'GAS development walkthrough covering player ability Blueprint configuration and trigger logic.',
+        },
+      },
+      {
+        type: 'localVideo',
+        src: '/media/projects/reforge/character-blueprint-animation.mp4',
+        poster: '/media/projects/reforge/character-blueprint-animation-poster.webp',
+        title: { zh: '主角蓝图与动画蓝图', en: 'Player Blueprint and Animation Blueprint' },
+        alt: { zh: '主角组件与动画蓝图演示', en: 'Player components and Animation Blueprint walkthrough' },
+        caption: {
+          zh: '角色开发记录：展示主角组件、骨骼结构与动画蓝图状态逻辑。',
+          en: 'Character development walkthrough covering player components, skeletal setup, and Animation Blueprint state logic.',
+        },
+      },
+      {
+        type: 'localVideo',
+        src: '/media/projects/reforge/npc-blueprint.mp4',
+        poster: '/media/projects/reforge/npc-blueprint-poster.webp',
+        title: { zh: 'NPC 蓝图系统演示', en: 'NPC Blueprint system walkthrough' },
+        alt: { zh: 'NPC 动画与能力蓝图演示', en: 'NPC animation and ability Blueprint walkthrough' },
+        caption: {
+          zh: 'NPC 开发记录：展示动画蓝图、移动状态与战斗能力相关配置。',
+          en: 'NPC development walkthrough covering Animation Blueprints, movement states, and combat ability configuration.',
+        },
       },
     ],
   },

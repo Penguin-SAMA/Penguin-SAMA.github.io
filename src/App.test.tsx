@@ -118,17 +118,34 @@ describe('portfolio page', () => {
     )
   })
 
-  it('renders placeholder images without play or empty detail controls', () => {
+  it('keeps placeholders passive and exposes the Reforge media gallery', async () => {
+    const user = userEvent.setup()
     render(<App />)
 
     const cards = screen.getAllByTestId('project-card')
-    cards.forEach((card) => {
+    ;[cards[0], cards[2], cards[3]].forEach((card) => {
+      if (!card) throw new Error('Expected placeholder project card')
       const image = within(card).getByRole('img')
       expect(image).toHaveAttribute('src', expect.stringMatching(/^\/media\/placeholders\/.+\.webp$/))
       expect(within(card).getByText('项目素材待补充')).toBeInTheDocument()
       expect(within(card).queryByRole('button')).not.toBeInTheDocument()
       expect(within(card).queryByRole('link')).not.toBeInTheDocument()
     })
+
+    const reforgeCard = cards[1]
+    if (!reforgeCard) throw new Error('Expected Reforge project card')
+    const reforge = within(reforgeCard)
+    const video = reforge.getByLabelText('Reforge 原型演示视频')
+    expect(video).toHaveAttribute('controls')
+    expect(video).toHaveAttribute('preload', 'metadata')
+    expect(video).toHaveAttribute('poster', '/media/projects/reforge/reforge-gameplay-poster.webp')
+    expect(reforge.getAllByRole('button')).toHaveLength(11)
+    expect(reforge.queryByText('项目素材待补充')).not.toBeInTheDocument()
+
+    await user.click(reforge.getByRole('button', { name: '切换至：项目场景概览' }))
+    expect(reforge.getByRole('img', { name: 'Unreal Engine 编辑器中的仓库营地场景' }))
+      .toHaveAttribute('src', '/media/projects/reforge/reforge-overview.webp')
+    expect(reforge.getByText(/World Partition \/ HLOD/)).toBeInTheDocument()
 
     expect(screen.queryByText(/查看详情|View details/i)).not.toBeInTheDocument()
   })

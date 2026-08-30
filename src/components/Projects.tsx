@@ -1,7 +1,7 @@
 import { IconArrowUpRight } from '@tabler/icons-react'
 import type { Locale } from '../content/portfolio'
 import { localize, projects, siteCopy } from '../content/portfolio'
-import { ProjectMedia } from './ProjectMedia'
+import { ProjectGallery } from './ProjectGallery'
 import { Reveal } from './Reveal'
 import { SectionHeading } from './SectionHeading'
 import styles from './Projects.module.css'
@@ -27,7 +27,6 @@ export function Projects({ locale }: ProjectsProps) {
 
         <div className={styles.projectList}>
           {projects.map((project, index) => {
-            const media = project.media[0]
             const order = String(index + 1).padStart(2, '0')
 
             return (
@@ -43,7 +42,7 @@ export function Projects({ locale }: ProjectsProps) {
                 </Reveal>
 
                 <Reveal className={styles.mediaColumn} delay={0.06} distance={34}>
-                  {media ? <ProjectMedia item={media} locale={locale} priority={index === 0} /> : null}
+                  <ProjectGallery items={project.media} locale={locale} priority={index === 0} />
                   <span className={styles.mediaCaption} aria-hidden="true">
                     CASE / {project.slug.toUpperCase()}
                   </span>
@@ -56,6 +55,9 @@ export function Projects({ locale }: ProjectsProps) {
                   </div>
                   <h3>{localize(project.title, locale)}</h3>
                   <p className={styles.summary}>{localize(project.summary, locale)}</p>
+                  {project.showcaseNote ? (
+                    <p className={styles.showcaseNote}>{localize(project.showcaseNote, locale)}</p>
+                  ) : null}
 
                   <ul className={styles.highlights} role="list">
                     {project.highlights.map((highlight, highlightIndex) => (
