@@ -120,7 +120,7 @@ export const siteCopy = {
   ],
   hero: {
     name: { zh: '毛启德', en: 'Qide Mao' },
-    title: { zh: '游戏客户端开发', en: 'Game Client Development' },
+    title: { zh: '个人作品集', en: 'Portfolio' },
     description: {
       zh: '使用 Unreal Engine 5、C++、蓝图与 Godot 进行项目实践，探索图形学、跨平台工程化与 AI 协同开发。',
       en: 'Building projects with Unreal Engine 5, C++, Blueprints, and Godot while exploring graphics, cross-platform engineering, and AI-assisted development.',

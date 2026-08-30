@@ -86,7 +86,8 @@
 }
 
 .copy h1 {
-  max-width: 9.5em;
+  max-width: none;
+  white-space: nowrap;
 }
 
 .copy h1 span {

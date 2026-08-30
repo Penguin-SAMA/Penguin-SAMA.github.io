@@ -59,8 +59,7 @@ export function Header({ locale, onLocaleChange }: HeaderProps) {
         <a className={styles.brand} href="#home" onClick={handleNav}>
           <span className={styles.brandMark} aria-hidden="true">MQ</span>
           <span className={styles.brandCopy}>
-            <strong>QIDE MAO</strong>
-            <small>CLIENT DEV</small>
+            <strong>毛启德-个人作品集</strong>
           </span>
         </a>
 

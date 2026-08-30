@@ -51,20 +51,14 @@
 }
 
 .brandCopy {
-  display: grid;
+  display: block;
   line-height: 1.12;
+  white-space: nowrap;
 }
 
 .brandCopy strong {
-  font-size: 0.77rem;
-  letter-spacing: 0.18em;
-}
-
-.brandCopy small {
-  color: var(--color-text-muted);
-  font-family: var(--font-mono);
-  font-size: 0.58rem;
-  letter-spacing: 0.2em;
+  font-size: 0.8rem;
+  letter-spacing: 0.08em;
 }
 
 .navigationPanel {

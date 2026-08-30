@@ -30,7 +30,7 @@ describe('portfolio page', () => {
     expect(
       screen.getByRole('heading', {
         level: 1,
-        name: '游戏客户端开发',
+        name: '个人作品集',
       }),
     ).toBeInTheDocument()
     expect(screen.getByRole('heading', { name: '精选作品' })).toBeInTheDocument()
@@ -52,7 +52,7 @@ describe('portfolio page', () => {
       expect(
         screen.getByRole('heading', {
           level: 1,
-          name: 'Game Client Development',
+          name: 'Portfolio',
         }),
       ).toBeInTheDocument()
       expect(window.location.search).toBe('?lang=en')

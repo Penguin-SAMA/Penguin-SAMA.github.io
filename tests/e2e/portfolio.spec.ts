@@ -72,17 +72,52 @@ test('desktop navigation scrolls to the selected section', async ({ page }) => {
   })).toBe(true)
 })
 
+test('requested brand and hero title stay on one line', async ({ page }) => {
+  await openPortfolio(page, { width: 1440, height: 900 })
+
+  const brand = page.locator('header strong')
+  const heading = page.locator('h1')
+  await expect(brand).toHaveText('毛启德-个人作品集')
+  await expect(heading).toHaveAccessibleName('个人作品集')
+
+  for (const element of [brand, heading]) {
+    const metrics = await element.evaluate((node) => {
+      const style = getComputedStyle(node)
+      const walker = document.createTreeWalker(node, NodeFilter.SHOW_TEXT)
+      const lineTops: number[] = []
+      let textNode = walker.nextNode()
+
+      while (textNode) {
+        const range = document.createRange()
+        range.selectNodeContents(textNode)
+        lineTops.push(
+          ...Array.from(range.getClientRects(), (rect) => Math.round(rect.top)),
+        )
+        textNode = walker.nextNode()
+      }
+
+      return {
+        lineCount: new Set(lineTops).size,
+        whiteSpace: style.whiteSpace,
+      }
+    })
+
+    expect(metrics.whiteSpace).toBe('nowrap')
+    expect(metrics.lineCount).toBe(1)
+  }
+})
+
 test('language switch updates copy, document language, and the URL query', async ({ page }) => {
   await openPortfolio(page, { width: 1440, height: 900 })
 
   await expect(page.locator('html')).toHaveAttribute('lang', 'zh-CN')
-  await expect(page.getByRole('heading', { level: 1, name: '游戏客户端开发' })).toBeVisible()
+  await expect(page.getByRole('heading', { level: 1, name: '个人作品集' })).toBeVisible()
 
   const languageGroup = page.getByRole('group', { name: '切换语言' })
   await languageGroup.getByRole('button', { name: 'EN', exact: true }).click()
 
   await expect(page.locator('html')).toHaveAttribute('lang', 'en')
-  await expect(page.getByRole('heading', { level: 1, name: 'Game Client Development' })).toBeVisible()
+  await expect(page.getByRole('heading', { level: 1, name: 'Portfolio' })).toBeVisible()
   await expect.poll(() => new URL(page.url()).searchParams.get('lang')).toBe('en')
   await expect(page.getByRole('group', { name: 'Switch language' })
     .getByRole('button', { name: 'EN', exact: true }))
@@ -90,7 +125,7 @@ test('language switch updates copy, document language, and the URL query', async
 
   await page.reload({ waitUntil: 'domcontentloaded' })
   await expect(page.locator('html')).toHaveAttribute('lang', 'en')
-  await expect(page.getByRole('heading', { level: 1, name: 'Game Client Development' })).toBeVisible()
+  await expect(page.getByRole('heading', { level: 1, name: 'Portfolio' })).toBeVisible()
   expect(new URL(page.url()).searchParams.get('lang')).toBe('en')
 })
 
